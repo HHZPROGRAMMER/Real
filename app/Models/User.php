@@ -54,7 +54,7 @@ class User extends Authenticatable
         return $this->email === 'xasanxafizov258@gmail.com';
     }
 
-    // app/Models/User.php
+
 
     public function isAdmin() {
         return $this->role === 'admin';

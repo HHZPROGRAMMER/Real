@@ -43,4 +43,31 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+
+            protected static function booted()
+            {
+                static::deleting(function ($task) {
+                    self::logActivity($task, 'deleted', "Vazifa o'chirildi: " . $task->title);
+                });
+            
+                static::created(function ($task) {
+                    self::logActivity($task, 'created', "Yangi vazifa yaratildi: " . $task->title);
+                });
+            
+                static::updated(function ($task) {
+                    self::logActivity($task, 'updated', "Vazifa tahrirlandi: " . $task->title);
+                });
+            }
+
+        protected static function logActivity($task, $action, $description)
+        {
+            \App\Models\TaskHistory::create([
+                'task_id'     => $task->id,
+                'user_id'     => auth()->id() ?? $task->user_id,
+                'action'      => $action,
+                'description' => $description,
+            ]);
+        }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TaskHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -21,5 +22,19 @@ class AdminController extends Controller
         $user->save();
 
         return back()->with('success', 'Foydalanuvchi roli yangilandi!');
+    }
+
+    public function history()
+    {
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->route('dashboard')->with('error', 'Sizda bu sahifani ko‘rish huquqi yo‘q!');
+        }
+
+
+        $history = TaskHistory::with(['user', 'task'])
+                    ->latest()
+                    ->paginate(15);
+
+        return view('admin.history', compact('history'));
     }
 }

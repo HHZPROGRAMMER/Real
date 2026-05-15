@@ -66,6 +66,13 @@
     {{-- Vazifalar ro'yxati --}}
     <div class="card shadow-sm border-0 rounded-4 p-4">
         <h5 class="mb-4 fw-bold">So'nggi vazifalar</h5>
+
+        @if(auth()->user()->isAdmin())
+            <a href="{{ route('admin.history') }}" class="btn btn-primary shadow-sm d-flex flex-end gap-2 mt-3 mb-4">
+                <i class="bi bi-clock-history"></i> 
+                <span>Tizim Amallar Tarixi</span>
+            </a>
+        @endif
         
         @forelse($tasks as $task)
         <div class="task-item d-flex align-items-center justify-content-between p-3 mb-2 border">

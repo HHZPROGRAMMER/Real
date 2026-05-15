@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::put('tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
     Route::delete('tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+    Route::get('/admin/history', [AdminController::class, 'history'])->name('admin.history');
 });
 
 Route::get('super-admin', [SuperAdminController::class, 'super'])->name('super_admin.super');
