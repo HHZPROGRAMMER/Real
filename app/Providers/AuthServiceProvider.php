@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Providers;
+
+use Gate;
+use Illuminate\Support\ServiceProvider;
+
+class AuthServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        Gate::define('is-super-admin', function ($user) {
+            return $user->role === 'super_admin';
+        });
+    }
+}
