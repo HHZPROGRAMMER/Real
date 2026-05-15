@@ -152,10 +152,18 @@
                 {{-- Edit va Delete tugmalari --}}
 
                 <div class="ms-auto d-flex gap-2">
-                    <button class="btn btn-outline-primary btn-sm">Edit</button>
-                    <button class="btn btn-outline-danger btn-sm bg-red-100">Delete</button>
+                        @if(auth()->user()->isAdmin() || auth()->user()->isManager())
+                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
+                        
+                        <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm bg-red-100" onclick="return confirm('Ochirishga aminmisiz?')">Delete</button>
+                        </form>
+                    @endif
                 </div>
-                hhz
+
+                {{-- Edit va Delete tugmalari --}}
 
 
 

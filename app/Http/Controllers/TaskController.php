@@ -62,14 +62,6 @@ class TaskController extends Controller
    }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -77,8 +69,10 @@ class TaskController extends Controller
         if (!auth()->user()->isAdmin() && !auth()->user()->isManager()) {
             return redirect()->route('dashboard')->with('error', 'Sizda vazifa tahrirlash huquqi yo‘q!');
         }
-
+    
+        $task = Task::findOrFail($id); 
         $users = User::all();
+    
         return view('tasks.edit', compact('task', 'users'));
     }
 
@@ -87,7 +81,25 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (!auth()->user()->isAdmin() && !auth()->user()->isManager()) {
+            return redirect()->route('dashboard')->with('error', 'Sizda vazifa tahrirlash huquqi yo‘q!');
+        }
+    
+        $task = Task::findOrFail($id);
+    
+        $data = $request->only(['title', 'description', 'status']);
+    
+        if (auth()->user()->isPrivileged() && $request->filled('user_id')) {
+            $data['user_id'] = $request->user_id;
+        }
+    
+        if ($request->filled('supervisor_id')) {
+            $data['supervisor_id'] = $request->supervisor_id;
+        }
+    
+        $task->update($data);
+    
+        return redirect()->route('dashboard')->with('success', 'Vazifa muvaffaqiyatli yangilandi!');
     }
 
     /**
@@ -95,10 +107,17 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (!auth()->user()->isAdmin() && !auth()->user()->isManager()) {
+            return redirect()->route('dashboard')->with('error', 'Sizda vazifa o‘chirish huquqi yo‘q!');
+        }
+    
+        $task = Task::findOrFail($id);
+        $task->delete();
+    
+        return redirect()->route('dashboard')->with('success', 'Vazifa muvaffaqiyatli o‘chirildi!');
     }
 
-            public function updateStatus(Request $request, Task $task)
+    public function updateStatus(Request $request, Task $task)
         {
             $request->validate(['status' => 'required|in:pending,progress,done']);
             $task->update(['status' => $request->status]);
