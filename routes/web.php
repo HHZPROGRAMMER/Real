@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 /*
 Login rutlari
 */
-
+Route::middleware('guest')->group(function () {
 
 Route::get("/", [LoginController::class, "login"])->name("login");
 Route::post("/authlogin", [LoginController::class, "authlogin"])->name("authlogin");
@@ -25,10 +25,6 @@ Register rutlari
 Route::get("/register", [RegisterController::class, "register"])->name("register");
 Route::post("/authregister", [RegisterController::class, "authregister"])->name("authregister");
 
-/*
-Email rutlari
-*/
-
 Route::get("email", [EmailverificationController::class, "email"])->name("email");
 Route::post("authemail", [EmailverificationController::class, "authemail"])->name("authemail");
 /*
@@ -37,11 +33,19 @@ Emailcheck
 
 Route::get("emailcheckcode", [EmailcheckcodeController::class, "showVerifyForm"])->name("emailcheckcode");
 Route::post("authemailcheckcode", [EmailcheckcodeController::class, "verifyCode"])->name("authemailcheckcode");
+}); 
+
+/*
+Email rutlari
+*/
+Route::middleware('auth')->group(function () {
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+
 
 
 //dashboard rutlari
 
-Route::middleware('auth')->group(function () {
     Route::get('dashboard', [TaskController::class, 'index'])->name('dashboard');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     // Task create
@@ -53,8 +57,11 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
+    Route::middleware('role:admin')->group(function () {
     Route::get('/admin/history', [AdminController::class, 'history'])->name('admin.history');
-});
+    });
+
+    Route::middleware('role:super-admin')->group(function () {
 
 Route::get('super-admin', [SuperAdminController::class, 'super'])->name('super_admin.super');
 Route::post('super-admin/{user}', [SuperAdminController::class, 'updaterole'])->name('super_admin.updaterole');
@@ -62,3 +69,6 @@ Route::post('super-admin/{user}', [SuperAdminController::class, 'updaterole'])->
 Route::patch('/tasks/{task}/status', [App\Http\Controllers\TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
 Route::get('/notifications/read', [SuperAdminController::class, 'markAsRead'])->name('super_admin.markAsRead'); 
+    });
+
+});
