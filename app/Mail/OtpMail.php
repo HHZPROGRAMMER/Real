@@ -34,7 +34,7 @@ class OtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: 'emails.otp', // Bu yerda ham text deb o'zgartiring
+            text: 'emails.otp',
             with: [
                 'code' => $this->code,
             ],

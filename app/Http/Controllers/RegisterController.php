@@ -22,7 +22,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role is 'user' 
+            'role' => 'user',
             'created_by' => null,
         ]);
 
