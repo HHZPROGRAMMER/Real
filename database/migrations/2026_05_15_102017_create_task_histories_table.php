@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('task_histories', function (Blueprint $row) {
             $row->id();
             $row->foreignId('task_id')->nullable()->constrained()->onDelete('set null');
-            $row->foreignId('user_id')->constrained();
+            $row->foreignId('user_id')->constrained()->cascadeOnDelete();
             $row->string('action');
             $row->text('description');
             $row->timestamps();

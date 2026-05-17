@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Notifications\NewUserRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Notification;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
