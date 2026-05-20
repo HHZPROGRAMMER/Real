@@ -61,7 +61,7 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/admin/history', [AdminController::class, 'history'])->name('admin.history');
     });
 
-    Route::middleware('role:super-admin')->group(function () {
+    Route::middleware('role:super_admin')->group(function () {
 
 Route::get('super-admin', [SuperAdminController::class, 'super'])->name('super_admin.super');
 Route::post('super-admin/{user}', [SuperAdminController::class, 'updaterole'])->name('super_admin.updaterole');

@@ -23,7 +23,7 @@ class SuperAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => 'required|in:admin,manager,user',
+            'role' => 'required|in:super_admin,admin,manager,user',
         ];
     }
 }
